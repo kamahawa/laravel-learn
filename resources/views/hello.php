@@ -1,0 +1,1 @@
+Chao <?php echo $hoten; ?>

@@ -14,3 +14,80 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('study', function () {
+    return "study";
+});
+
+//truyen tham so bat buoc
+Route::get('study/{subject}', function ($subject) {
+    return "study : $subject";
+});
+
+Route::get('study/{subject}/{time}', function ($subject, $time) {
+    return "study : $subject luc $time";
+});
+
+//khong can truyen tham so
+Route::get('mon-an/{tenmonan?}', function ($tenmonan = "KFC") {
+    return $tenmonan;
+});
+
+//Thêm điều kiện cho các tham số để an toàn
+Route::get('thongtin/{tuoi}/{ten}', function($tuoi, $ten) {
+    return "Chào Bạn $ten có $tuoi tuổi";
+})->where(['tuoi' => '[0-9]+', 'ten' => '[a-z]+']);
+
+//Truyền giá trị cho View
+Route::get('ten',function () {
+    $hoten = 'Truong Huy Cuong';
+    return view('hello',compact('hoten'));
+});
+
+Route::get('info','WelcomeController@showInfo');
+
+Route::get('testDinhDanh','WelcomeController@testDinhDanh');
+
+//Tạo định danh cho route
+Route::get('SaiGon',['as' => 'sg',function () {
+    return 'Sai Gon dep lam!';
+}]);
+
+//Tạo nhóm route
+Route::group(['prefix' => 'quanly'],function () {
+    Route::get('tintuc', function () {
+        echo "Đây là trang quản lý tin tức";
+    });
+    Route::get('thanhvien', function () {
+        echo "Đây là trang quan lý thành viên";
+    });
+});
+
+//return view
+Route::get('shareView',function () {
+    return view('layout.sub.view');
+});
+Route::get('shareLayout',function () {
+    return view('layout.sub.layout');
+});
+
+//share biến cho toàn bộ file view
+View::share('title', 'Hoc laravel 5.x');
+
+//share biến cho các file view chỉ định
+View::composer(['layout.sub.view','layout.sub.layout'], function($view) {
+    $view->with('share1','file share');
+});
+
+View::composer('layout.sub.view', function($view) {
+    $view->with('share2','file share 2');
+});
+
+//Kiểm tra sự tồn tại của 1 View
+Route::get('ton-tai-view',function () {
+    if (view()->exists('huycuong')){
+        return view('huycuong');
+    } else {
+        return "Không Tồn Tại View";
+    }
+});
