@@ -36,7 +36,7 @@ Route::get('mon-an/{tenmonan?}', function ($tenmonan = "KFC") {
 //Thêm điều kiện cho các tham số để an toàn
 Route::get('thongtin/{tuoi}/{ten}', function($tuoi, $ten) {
     return "Chào Bạn $ten có $tuoi tuổi";
-})->where(['tuoi' => '[0-9]+', 'ten' => '[a-z]+']);
+})->where(['tuoi' => '[0-9]+', 'ten' => '[a-z][A-Z]+']);
 
 //Truyền giá trị cho View
 Route::get('ten',function () {
@@ -91,3 +91,39 @@ Route::get('ton-tai-view',function () {
         return "Không Tồn Tại View";
     }
 });
+
+//goi view
+Route::get('goi-master', function(){
+   return view('views.sub');
+});
+Route::get('nhung-sub-view', function(){
+    return view('views.sub');
+});
+
+//URL
+Route::get('url/full', function(){
+   return URL::full();
+});
+
+Route::get('url/asset', function(){
+    //return URL::asset('/mystyle.css');//for laravel 4
+
+    //return asset('/mystyle.css', true);// neu la https
+
+    return asset('/mystyle.css');
+});
+
+Route::get('url/to',function () {
+    //return URL::to('study',["Laravel","10h"],true);//neu la https thi them true
+    return URL::to('study',["Laravel","10h"]);
+});
+
+//hoac dung https vs secure
+Route::get('url/secure',function () {
+    return secure_url('study',["Laravel","10h"]);
+});
+
+
+
+
+
