@@ -173,6 +173,24 @@ Route::get('schema/create/category',function () {
     });
 });
 
+Route::get('schema/create/category_new',function () {
+    Schema::create('category_new', function($table) {
+        $table->increments('id');
+        $table->string('name');
+        $table->timestamps();
+    });
+});
+
+Route::get('schema/create/news',function () {
+    Schema::create('news', function($table) {
+        $table->increments('id');
+        $table->string('title');
+        $table->integer('intro');
+        $table->integer('cate_id')->unsigned();
+        $table->timestamps();
+    });
+});
+
 Route::get('schema/create/product',function () {
     Schema::create('product', function($table) {
         $table->increments('id');
@@ -184,5 +202,37 @@ Route::get('schema/create/product',function () {
     });
 });
 
+Route::get('query/select-all', function(){
+    $data = DB::table('product')->get();
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+});
 
+Route::get('query/select-column', function(){
+    $data = DB::table('product')->select('name')->where('id',4)->get();
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+});
 
+Route::get('query/or-where', function(){
+    $data = DB::table('product')->where('cate_id',2)->orWhere('price',50000)->get();
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+});
+
+Route::get('query/where', function(){
+    $data = DB::table('product')->where('cate_id',2)->where('price', '>',50000)->get();
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+});
+
+Route::get('query/join', function(){
+    $data = DB::table('news')->join('category_new','news.cate_id', '=', 'category_new.id')->select('title','name')->get();
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+});
