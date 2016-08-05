@@ -123,7 +123,66 @@ Route::get('url/secure',function () {
     return secure_url('study',["Laravel","10h"]);
 });
 
+//create table
+Route::get('schema/create', function(){
+    Schema::create('monhoc', function($table){
+        $table->increments('id');
+        $table->string('tenmonhoc');
+        $table->integer('gia');
+        $table->text('ghichu')->nullable();
+        $table->timestamps();
 
+    });
+});
+
+//rename table
+Route::get('schema/rename', function(){
+    Schema::rename('monhoc', 'mh');
+});
+
+//drop table
+Route::get('schema/drop',function () {
+    Schema::drop('monhoc');
+});
+
+//drop table if exits
+Route::get('schema/drop-exits',function () {
+    Schema::dropIfExists('monhoc');
+});
+
+//thay doi thuoc tinh 1 cot
+Route::get('schema/chang-col',function () {
+    Schema::table('monhoc', function($table) {
+        $table->string('tenmonhoc', 100)->change();
+    });
+});
+
+//drop a column
+Route::get('schema/drop-col', function(){
+   Schema::table('monhoc', function($table){
+        $table->dropColumn('ghichu');
+        //$table->dropColumn(['tenmonhoc','gia']);
+   });
+});
+
+Route::get('schema/create/category',function () {
+    Schema::create('category', function($table) {
+        $table->increments('id');
+        $table->string('name');
+        $table->timestamps();
+    });
+});
+
+Route::get('schema/create/product',function () {
+    Schema::create('product', function($table) {
+        $table->increments('id');
+        $table->string('name');
+        $table->integer('price');
+        $table->integer('cate_id')->unsigned();
+        $table->foreign('cate_id')->references('id')->on('category')->onDelete('cascade');
+        $table->timestamps();
+    });
+});
 
 
 
