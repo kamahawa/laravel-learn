@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call("NewsTableSeeder");
+        $this->call("ImagesTableSeeder");
     }
 }
 
@@ -49,6 +49,22 @@ class NewsTableSeeder extends Seeder
             array('title'=>'Day la title 2', 'intro' => '2', 'cate_id' => 1),
             array('title'=>'Day la title 3', 'intro' => '3', 'cate_id' => 1),
             array('title'=>'Day la title 4', 'intro' => '4', 'cate_id' => 1)
+        ]);
+    }
+}
+
+class ImagesTableSeeder extends Seeder
+{
+    public function run()
+    {
+        DB::table('images')->insert([
+            ['name'=>'hinh_quan_tennis_1.png', 'product_id' => 5],
+            ['name'=>'hinh_quan_tennis_2.png', 'product_id' => 5],
+            ['name'=>'hinh_quan_tennis_3.png', 'product_id' => 5],
+            ['name'=>'hinh_quan_tennis_4.png', 'product_id' => 5],
+            ['name'=>'hinh_quan_kaki_nam_1.png', 'product_id' => 8],
+            ['name'=>'hinh_quan_kaki_nam_2.png', 'product_id' => 8],
+            ['name'=>'hinh_quan_kaki_nam_3.png', 'product_id' => 8]
         ]);
     }
 }

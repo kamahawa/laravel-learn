@@ -236,3 +236,106 @@ Route::get('query/join', function(){
     print_r($data);
     echo "</pre>";
 });
+
+Route::get('model/select-all', function(){
+    //$data = App\Product::all()->tojSon();
+    $data = App\Product::all()->toArray();
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+});
+
+Route::get('model/select-id', function(){
+    //$data = App\Product::find(5)->toArray();
+    $data = App\Product::findOrFail(5)->toArray();
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+});
+
+Route::get('model/where', function(){
+    $data = App\Product::where('price', '>', 50000)->firstOrFail()->get()->toArray();
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+});
+
+Route::get('model/raw', function(){
+    $data = App\Product::whereRaw('price > ?', [50000])->get()->toArray();
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+});
+
+//them du lieu
+Route::get('model/insert', function(){
+    $product = new App\Product;
+    $product->name = 'Quần Kaki Nam';
+    $product->price = 65000;
+    $product->cate_id = 2;
+    $product->save();
+
+    echo 'Finish !!!';
+});
+
+Route::get('model/create', function(){
+    $data = [
+        'name'=>'Quần Thể Dục',
+        'price'=>'45000',
+        'cate_id'=>2
+    ];
+
+    App\Product::create($data);
+
+    echo 'Finish !!!';
+});
+
+//update
+Route::get('model/update', function(){
+
+    $product = App\Product::find(9);
+    $product->price = 50000;
+    $product->save();
+
+
+    echo 'Finish Update !!!';
+});
+
+//delete
+Route::get('model/delete', function(){
+
+    App\Product::destroy(9);
+
+    echo 'Finish Delete !!!';
+});
+
+Route::get('relation/one-many-1', function(){
+    $data = App\Product::find(5)->images()->get()->toArray();
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+});
+
+Route::get('relation/one-many-2', function(){
+    $data = App\Images::find(7)->product()->get()->toArray();
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+});
+
+Route::get('form/layout', function(){
+    return view('form.layout');
+});
+
+Route::post('form/data', ['as' => 'sendEmail', function(){
+    return 'ok';
+}]);
+
+Route::get('form/dang-ky', function(){
+    return view('form.them');
+});
+
+Route::post('form/dang-ky-mon-hoc', ['as' => 'postDangKy', 'uses' => 'MonHocController@them']);
+
+//them ky tu bat ky tren link, se chuyen ve trang chu
+Route::any('{all?}','WelcomeController@index')->where('all','.*');

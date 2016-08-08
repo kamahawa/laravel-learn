@@ -18,6 +18,12 @@ class WelcomeController extends Controller
      * @param  int  $id
      * @return Response
      */
+
+    public function index()
+    {
+        return view('welcome');
+    }
+
     public function showInfo()
     {
         return view('welcome.info');
