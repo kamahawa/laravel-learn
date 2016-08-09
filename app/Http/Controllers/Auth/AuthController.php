@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -68,5 +72,43 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function getRegister()
+    {
+        return view('auth.register');
+    }
+
+    public function postRegister(RegisterRequest $request)
+    {
+        $thanhvien = new User();
+        $thanhvien->name = $request->name;
+        $thanhvien->email = $request->email;
+        $thanhvien->password = Hash::make($request->password);
+        $thanhvien->remember_token = $request->_token;
+        $thanhvien->save();
+    }
+
+    public function getLogin()
+    {
+        return view('auth.login');
+    }
+
+    public function postLogin(LoginRequest $request)
+    {
+        $auth = array(
+            'email' => $request->email,
+            'password' => $request->password,
+            //chi co id = 2 duoc login
+            'id' => 2
+        );
+        if(Auth::attempt($auth))
+        {
+            return redirect('authentication/demo');
+        }
+        else
+        {
+            echo 'That bai';
+        }
     }
 }

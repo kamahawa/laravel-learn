@@ -338,4 +338,80 @@ Route::get('form/dang-ky', function(){
 Route::post('form/dang-ky-mon-hoc', ['as' => 'postDangKy', 'uses' => 'MonHocController@them']);
 
 //them ky tu bat ky tren link, se chuyen ve trang chu
-Route::any('{all?}','WelcomeController@index')->where('all','.*');
+//Route::any('{all?}','WelcomeController@index')->where('all','.*');
+
+Route::get('reponse/json', function(){
+    $arr = array(
+        'trungtam' => 'Khoa Pham Training',
+        'monhoc' => 'Lap Trinh Laravel',
+        'giangvien' => 'Vu Quoc Tuan'
+    );
+    return Response::json($arr);
+});
+
+Route::get('response/xml', function () {
+    $content = '<?xml version="1.0" encoding="UTF-8"?>
+    <root>
+        <trungtam>Khoa Phạm</trungtam>
+        <danhsach>
+            <monhoc>Lập Trình Laravel</monhoc>
+            <monhoc>Lập Trình Swift</monhoc>
+        </danhsach>
+    </root>';
+    $status = 200;
+    $value = 'text/xml';
+    return response($content, $status)
+        ->header('Content-Type', $value);
+});
+
+Route::get('response/redirect', function ()
+{
+    return redirect('/');
+});
+
+Route::get('response/download', function ()
+{
+    $url = 'public/download/demo.rar';
+    return Response::download($url);
+});
+
+Route::get('response/downloadAndDelete', function ()
+{
+    $url = 'public/download/demo.rar';
+    return Response::download($url)->deleteFileAfterSend(true);
+});
+
+Route::get('response/macro/cap', function(){
+    return response()->cap('Truong Huy Cuong');
+});
+
+Route::get('response/macro/contact', function(){
+    return response()->input('#');
+});
+
+Route::get('authen/login', ['as'=>'getLogin', 'uses' => 'ThanhVienController@getLogin']);
+Route::post('authen/login', ['as'=>'postLogin', 'uses' => 'ThanhVienController@postLogin']);
+
+Route::get('authentication/getRegister', ['as' => 'getRegister', 'uses' => 'Auth\AuthController@getRegister']);
+Route::post('authentication/postRegister', ['as' => 'postRegister', 'uses' => 'Auth\AuthController@postRegister']);
+
+Route::get('authentication/getlogin', ['as' => 'getlogin', 'uses' => 'Auth\AuthController@getlogin']);
+Route::post('authentication/postLogin', ['as' => 'postLogin', 'uses' => 'Auth\AuthController@postLogin']);
+
+Route::get('authentication/demo', function(){
+    return view('views.layout');
+});
+
+Route::resource('hocsinh','HocSinhController');
+
+
+
+
+
+
+
+
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');

@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call("ImagesTableSeeder");
+        $this->call("ThanhVienTableSeeder");
     }
 }
 
@@ -65,6 +65,18 @@ class ImagesTableSeeder extends Seeder
             ['name'=>'hinh_quan_kaki_nam_1.png', 'product_id' => 8],
             ['name'=>'hinh_quan_kaki_nam_2.png', 'product_id' => 8],
             ['name'=>'hinh_quan_kaki_nam_3.png', 'product_id' => 8]
+        ]);
+    }
+}
+
+class ThanhVienTableSeeder extends Seeder
+{
+    public function run()
+    {
+        DB::table('thanh_viens')->insert([
+            ['user'=>'Teo', 'pass' => Hash::make(123456), 'level' => 1],
+            ['user'=>'Ti', 'pass' => Hash::make(123456), 'level' => 2],
+            ['user'=>'Tun', 'pass' => Hash::make(123456), 'level' => 2],
         ]);
     }
 }
